@@ -1,0 +1,180 @@
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.moviestan.app.MovieFragment">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_commnet"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_anchorGravity="bottom|right|end" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/movie_height"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/movie_poster"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/general_margin_fifth"
+                    android:layout_weight="1"
+                    android:src="@drawable/movie_poster" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/general_margin_fifth"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/movie_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Logan (2017)"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_text_size_18"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/general_divider_height"
+                        android:layout_marginTop="@dimen/general_margin_five"
+                        android:background="@color/divider" />
+
+                    <TextView
+                        android:id="@+id/movie_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/general_margin_five"
+                        android:text="ID: 123456"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_text_size_10" />
+
+                    <TextView
+                        android:id="@+id/movie_release"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/general_margin_five"
+                        android:text="Release Date: 2017/3/5"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_text_size_10" />
+
+                    <TextView
+                        android:id="@+id/movie_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/general_margin_five"
+                        android:text="In the year 2029, mutants are on the brink of extinction, with no new mutants having been born in 25 years. "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_text_size_12" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Rating Zone -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Rating -->
+                <RatingBar
+                    android:id="@+id/movie_rating"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/general_margin_fifth"
+                    android:layout_marginRight="@dimen/general_margin_fifth"
+                    android:layout_weight="0.5"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="5"
+                    android:stepSize="0.1" />
+                <!-- Tags -->
+                <LinearLayout
+                    android:id="@+id/movie_tags"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/general_margin_fifth"
+                    android:layout_marginRight="@dimen/general_margin_fifth"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/general_margin_three"
+                        android:background="@drawable/grey_button_all_round"
+                        android:padding="@dimen/general_margin_five"
+                        android:text="Action"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_divider_height_10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/general_margin_three"
+                        android:background="@drawable/grey_button_all_round"
+                        android:padding="@dimen/general_margin_five"
+                        android:text="Drama"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_divider_height_10" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/general_margin_three"
+                        android:background="@drawable/grey_button_all_round"
+                        android:padding="@dimen/general_margin_five"
+                        android:text="Sci-Fi"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_divider_height_10" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!-- Comments Area -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_list_comment" />
+                <include layout="@layout/item_list_comment" />
+                <include layout="@layout/item_list_comment" />
+                <include layout="@layout/item_list_comment" />
+                <include layout="@layout/item_list_comment" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>
+
+
+

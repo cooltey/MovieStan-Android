@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+    </group>
+
+    <item android:title="Recommend">
+        <menu>
+            <item
+                android:id="@+id/nav_recommend"
+                android:icon="@drawable/ic_top_recommend"
+                android:title="Top Recommend" />
+            <item
+                android:id="@+id/nav_recommend_2"
+                android:icon="@drawable/ic_recommend"
+                android:title="Recommend 2" />
+            <item
+                android:id="@+id/nav_recommend_3"
+                android:icon="@drawable/ic_recommend"
+                android:title="Recommend 3" />
+        </menu>
+    </item>
+
+
+    <item android:title="Social">
+        <menu>
+            <item
+                android:id="@+id/nav_follow"
+                android:icon="@drawable/ic_following"
+                android:title="Following" />
+            <item
+                android:id="@+id/nav_friends"
+                android:icon="@drawable/ic_friends"
+                android:title="Friends" />
+        </menu>
+    </item>
+
+    <item android:title="More">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Logout" />
+        </menu>
+    </item>
+</menu>

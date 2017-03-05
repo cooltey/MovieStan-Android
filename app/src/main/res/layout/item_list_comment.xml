@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/list_img"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="@dimen/general_margin_twenty"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/movie_poster"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/list_img"
+        android:layout_margin="@dimen/general_margin_twenty">
+        <RatingBar
+            android:id="@+id/rating"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="4"
+            android:layout_marginTop="@dimen/general_margin_five"/>
+        <TextView
+            android:id="@+id/list_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="
+Jackman gives Logan a withering rage that seems heartfelt, not hammy; Stewart is touching in his enraged befuddlement; and Keen, who resembles here what Katie Holmes might look like if she were Carrie, has a feral intensity."
+            android:textColor="@color/black"
+            android:textSize="@dimen/general_text_size_12" />
+        <TextView
+            android:id="@+id/list_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="By Peter Rainer @ 2017-03-05"
+            android:textStyle="italic"
+            android:textColor="@color/black"
+            android:textSize="@dimen/general_text_size_10" />
+    </LinearLayout>
+</RelativeLayout>
+

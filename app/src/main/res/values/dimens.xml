@@ -1,0 +1,75 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Drawer Icon Size -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">120dp</dimen>
+    <dimen name="nav_profile_icon">70dp</dimen>
+    <dimen name="nav_padding">10dp</dimen>
+
+    <!-- Movie Page -->
+    <dimen name="movie_height">160dp</dimen>
+
+
+    <dimen name="general_progress_margin">8dp</dimen>
+    <dimen name="general_progress_msg_margin">8dp</dimen>
+    <dimen name="general_divider_height">1dp</dimen>
+    <dimen name="general_divider_height_10">10dp</dimen>
+    <dimen name="general_field_text_width">90dp</dimen>
+    <dimen name="general_field_height">50dp</dimen>
+    <dimen name="general_field_height_large">100dp</dimen>
+    <dimen name="general_field_height_xlarge">150dp</dimen>
+    <dimen name="general_btn_height">25dp</dimen>
+    <dimen name="general_btn_arrow_size">20dp</dimen>
+    <dimen name="navigation_drawer_width">200dp</dimen>
+
+    <!-- Dialog -->
+    <dimen name="dialog_height">100dp</dimen>
+    <dimen name="dialog_margin">10dp</dimen>
+    <dimen name="dialog_padding">10dp</dimen>
+
+    <!-- Action Bar -->
+    <dimen name="action_title_size">24dp</dimen>
+    <dimen name="action_title_image_height">35dp</dimen>
+    <dimen name="action_font_spacing">5dp</dimen>
+    <dimen name="action_icon_size">30dp</dimen>
+    <dimen name="action_padding">15dp</dimen>
+    <dimen name="action_margin">-15dp</dimen>
+
+    <!-- General -->
+    <dimen name="general_text_size_48">48sp</dimen>
+    <dimen name="general_text_size_42">42sp</dimen>
+    <dimen name="general_text_size_36">36sp</dimen>
+    <dimen name="general_text_size_34">34sp</dimen>
+    <dimen name="general_text_size_32">32sp</dimen>
+    <dimen name="general_text_size_28">28sp</dimen>
+    <dimen name="general_text_size_26">26sp</dimen>
+    <dimen name="general_text_size_24">24sp</dimen>
+    <dimen name="general_text_size_23">23sp</dimen>
+    <dimen name="general_text_size_22">22sp</dimen>
+    <dimen name="general_text_size_20">20sp</dimen>
+    <dimen name="general_text_size_18">18sp</dimen>
+    <dimen name="general_text_size_16">16sp</dimen>
+    <dimen name="general_text_size_14">14sp</dimen>
+    <dimen name="general_text_size_13">13sp</dimen>
+    <dimen name="general_text_size_12">12sp</dimen>
+    <dimen name="general_text_size_10">10sp</dimen>
+    <dimen name="general_text_size_8">8sp</dimen>
+    <dimen name="general_margin_onepointfive">1.5dp</dimen>
+    <dimen name="general_margin_three">3dp</dimen>
+    <dimen name="general_margin_five">5dp</dimen>
+    <dimen name="general_margin_six">6dp</dimen>
+    <dimen name="general_margin_ten">10dp</dimen>
+    <dimen name="general_margin_fifth">15dp</dimen>
+    <dimen name="general_margin_twenty">20dp</dimen>
+    <dimen name="general_margin_twenty_five">25dp</dimen>
+    <dimen name="general_margin_thirty">30dp</dimen>
+    <dimen name="general_margin_forty">40dp</dimen>
+    <dimen name="general_margin_fifty">50dp</dimen>
+    <dimen name="general_margin_fiftyfive">55dp</dimen>
+    <dimen name="general_margin_sixty">60dp</dimen>
+    <dimen name="general_margin_seventy">70dp</dimen>
+</resources>

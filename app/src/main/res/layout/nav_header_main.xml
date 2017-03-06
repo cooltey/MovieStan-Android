@@ -12,7 +12,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Light">
 
     <ImageView
-        android:id="@+id/user_profile_img"
+        android:id="@+id/nav_profile_img"
         android:layout_width="@dimen/nav_profile_icon"
         android:layout_height="@dimen/nav_profile_icon"
         android:layout_marginLeft="@dimen/nav_padding"
@@ -23,7 +23,7 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/user_id"
+        android:id="@+id/nav_profile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

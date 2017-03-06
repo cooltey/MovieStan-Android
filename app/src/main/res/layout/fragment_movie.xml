@@ -9,6 +9,7 @@
 
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/write_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
@@ -99,19 +100,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <!-- Rating -->
-                <RatingBar
-                    android:id="@+id/movie_rating"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:layout_marginLeft="@dimen/general_margin_fifth"
                     android:layout_marginRight="@dimen/general_margin_fifth"
-                    android:layout_weight="0.5"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:rating="5"
-                    android:stepSize="0.1" />
+                    android:gravity="center">
+                    <!-- Rating -->
+                    <RatingBar
+                        android:id="@+id/movie_rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:rating="5" />
+                </LinearLayout>
                 <!-- Tags -->
                 <LinearLayout
                     android:id="@+id/movie_tags"

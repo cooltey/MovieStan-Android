@@ -29,7 +29,7 @@
     <item android:title="Social">
         <menu>
             <item
-                android:id="@+id/nav_follow"
+                android:id="@+id/nav_following"
                 android:icon="@drawable/ic_following"
                 android:title="Following" />
             <item

@@ -43,6 +43,16 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        // temp clickable item
+        view.findViewById(R.id.list_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get movie detail by movie id
+                ((MainActivity) getActivity()).displayMovieView(1);
+            }
+        });
+
         return view;
     }
 

@@ -1,0 +1,40 @@
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.moviestan.app.FollowingFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+            <include layout="@layout/item_list_following" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>
+
+
+

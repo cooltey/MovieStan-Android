@@ -1,15 +1,13 @@
 package com.moviestan.app;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
-public class MovieFragment extends Fragment {
+public class FollowingFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -19,12 +17,12 @@ public class MovieFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MovieFragment() {
+    public FollowingFragment() {
         // Required empty public constructor
     }
 
-    public static MovieFragment newInstance(String param1, String param2) {
-        MovieFragment fragment = new MovieFragment();
+    public static FollowingFragment newInstance(String param1, String param2) {
+        FollowingFragment fragment = new FollowingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -39,22 +37,13 @@ public class MovieFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie, container, false);
+        View view = inflater.inflate(R.layout.fragment_following, container, false);
 
-        FloatingActionButton myFab = (FloatingActionButton)  view.findViewById(R.id.write_comment);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), CommentActivity.class);
-                startActivity(intent);
-            }
-        });
 
         return view;
     }
@@ -64,7 +53,5 @@ public class MovieFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 
 }

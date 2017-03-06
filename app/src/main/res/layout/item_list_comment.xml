@@ -43,5 +43,10 @@ Jackman gives Logan a withering rage that seems heartfelt, not hammy; Stewart is
             android:textColor="@color/black"
             android:textSize="@dimen/general_text_size_10" />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_divider_height"
+        android:background="@color/divider"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
 

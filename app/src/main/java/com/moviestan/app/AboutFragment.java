@@ -1,15 +1,14 @@
 package com.moviestan.app;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 
-public class MovieFragment extends Fragment {
+public class AboutFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -19,12 +18,12 @@ public class MovieFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MovieFragment() {
+    public AboutFragment() {
         // Required empty public constructor
     }
 
-    public static MovieFragment newInstance(String param1, String param2) {
-        MovieFragment fragment = new MovieFragment();
+    public static AboutFragment newInstance(String param1, String param2) {
+        AboutFragment fragment = new AboutFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -39,22 +38,17 @@ public class MovieFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie, container, false);
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
 
-        FloatingActionButton myFab = (FloatingActionButton)  view.findViewById(R.id.write_comment);
-        myFab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), CommentActivity.class);
-                startActivity(intent);
-            }
-        });
+        WebView webView = (WebView) view.findViewById(R.id.webview);
+
+
+        webView.loadUrl("http://moviestan.azurewebsites.net/about.php");
 
         return view;
     }
@@ -64,7 +58,5 @@ public class MovieFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 
 }

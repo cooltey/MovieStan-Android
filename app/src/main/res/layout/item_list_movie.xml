@@ -43,5 +43,10 @@
             android:rating="4"
             android:layout_marginTop="@dimen/general_margin_five"/>
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general_divider_height"
+        android:background="@color/divider"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
 

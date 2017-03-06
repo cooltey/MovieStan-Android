@@ -56,7 +56,14 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            int count = getFragmentManager().getBackStackEntryCount();
+            if (count == 0) {
+                super.onBackPressed();
+
+                getSupportActionBar().setTitle(getString(R.string.app_name));
+            } else {
+                getFragmentManager().popBackStack();
+            }
         }
     }
 
@@ -73,8 +80,18 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_recommend:
-                fragment = new MovieFragment();
-                title  = "Movie Detail";
+                fragment = new RecommendFragment();
+                title  = "Top Recommend";
+                break;
+
+            case R.id.nav_recommend_2:
+                fragment = new RecommendFragment();
+                title  = "Recommend 2";
+                break;
+
+            case R.id.nav_recommend_3:
+                fragment = new RecommendFragment();
+                title  = "Recommend 3";
                 break;
 
             case R.id.nav_profile_img:
@@ -85,6 +102,21 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_profile_username:
                 fragment = new ProfileFragment();
                 title  = "Profile";
+                break;
+
+            case R.id.nav_following:
+                fragment = new FollowingFragment();
+                title  = "Following";
+                break;
+
+            case R.id.nav_friends:
+                fragment = new FriendsFragment();
+                title  = "Friends";
+                break;
+
+            case R.id.nav_about:
+                fragment = new AboutFragment();
+                title  = "About";
                 break;
 
             default:
@@ -105,6 +137,29 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setTitle(title);
         }
 
+    }
+
+
+
+    public void displayMovieView(int movie_id){
+
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+
+        fragment = new MovieFragment();
+        title  = "Movie Detail";
+
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
+
+        // set the toolbar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

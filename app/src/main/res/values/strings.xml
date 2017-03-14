@@ -8,4 +8,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- General -->
+    <string name="dialog_processing">Processing</string>
+
+    <!-- Cloud -->
+    <string name="api_error">API data fetch error</string>
 </resources>

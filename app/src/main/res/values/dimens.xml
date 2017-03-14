@@ -39,6 +39,9 @@
     <dimen name="action_padding">15dp</dimen>
     <dimen name="action_margin">-15dp</dimen>
 
+    <!-- Launch -->
+    <dimen name="launch_app_size">250dp</dimen>
+
     <!-- General -->
     <dimen name="general_text_size_48">48sp</dimen>
     <dimen name="general_text_size_42">42sp</dimen>

@@ -11,6 +11,7 @@ public class LiteDatabase {
     public String FACEBOOK_EMAIL    = "FACEBOOK_EMAIL";
     public String FACEBOOK_NAME     = "FACEBOOK_NAME";
     public String APP_USER_ID       = "APP_USER_ID";
+    public String APP_USER_TOKEN    = "APP_USER_TOKEN";
 
 
     private String mCoreDatabase = "Lite_Database";

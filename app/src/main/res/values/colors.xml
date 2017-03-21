@@ -17,4 +17,6 @@
     <color name="green_titlebar">#9FB73B</color>
     <color name="red_background">#D8127D</color>
     <color name="red_background_pressed">#d81251</color>
+    <color name="light_yellow">#efe9a2</color>
+    <color name="strong_yellow">#f5e629</color>
 </resources>

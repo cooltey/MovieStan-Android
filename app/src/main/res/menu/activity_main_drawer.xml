@@ -5,50 +5,46 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="@string/nav_menu_home" />
     </group>
 
-    <item android:title="Recommend">
+    <item android:title="@string/nav_menu_recommend">
         <menu>
             <item
                 android:id="@+id/nav_recommend"
                 android:icon="@drawable/ic_top_recommend"
-                android:title="Top Recommend" />
+                android:title="@string/app_title_top_recommend" />
             <item
                 android:id="@+id/nav_recommend_2"
                 android:icon="@drawable/ic_recommend"
-                android:title="Recommend 2" />
+                android:title="@string/app_title_recommend_2" />
             <item
                 android:id="@+id/nav_recommend_3"
                 android:icon="@drawable/ic_recommend"
-                android:title="Recommend 3" />
+                android:title="@string/app_title_recommend_3" />
         </menu>
     </item>
 
 
-    <item android:title="Social">
+    <item android:title="@string/nav_menu_social">
         <menu>
-            <item
-                android:id="@+id/nav_following"
-                android:icon="@drawable/ic_following"
-                android:title="Following" />
             <item
                 android:id="@+id/nav_friends"
                 android:icon="@drawable/ic_friends"
-                android:title="Friends" />
+                android:title="@string/app_title_friends" />
         </menu>
     </item>
 
-    <item android:title="More">
+    <item android:title="@string/nav_menu_more">
         <menu>
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_about"
-                android:title="About" />
+                android:title="@string/app_title_about" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"
-                android:title="Logout" />
+                android:title="@string/app_title_logout" />
         </menu>
     </item>
 </menu>

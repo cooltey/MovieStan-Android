@@ -15,4 +15,5 @@ public class JSONGetter {
 
         return returnString;
     }
+
 }

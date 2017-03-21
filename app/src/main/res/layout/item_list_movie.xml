@@ -7,10 +7,11 @@
 
     <ImageView
         android:id="@+id/list_img"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/movie_item_height"
+        android:layout_height="@dimen/movie_item_height"
         android:layout_margin="@dimen/general_margin_twenty"
-        android:src="@drawable/movie_poster"/>
+        android:scaleType="fitCenter"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,6 @@
             android:id="@+id/list_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Logan"
             android:textColor="@color/black"
             android:textSize="@dimen/general_text_size_20" />
 
@@ -29,7 +29,6 @@
             android:id="@+id/list_release"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Release Date: 2017-03-01"
             android:textColor="@color/black"
             android:textSize="@dimen/general_text_size_12"
             android:layout_marginTop="@dimen/general_margin_five"/>
@@ -39,9 +38,8 @@
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="4"
-            android:layout_marginTop="@dimen/general_margin_five"/>
+            android:layout_marginTop="@dimen/general_margin_five"
+            android:theme="@style/RatingBar"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"

@@ -18,6 +18,13 @@ public class MyProgressDialog{
         progressDialog.show();
     }
 
+    public static void procsessing(Context context, int position){
+        procsessing(context);
+        progressDialog.getWindow().setGravity(position);
+    }
+
+
+
     public static void cancel(){
         if(progressDialog != null){
             if(progressDialog.isShowing()){

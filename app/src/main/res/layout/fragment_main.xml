@@ -1,23 +1,16 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.moviestan.app.MainFragment">
 
-    <LinearLayout
+    <ListView
         android:id="@+id/list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/white">
 
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
+    </ListView>
 
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

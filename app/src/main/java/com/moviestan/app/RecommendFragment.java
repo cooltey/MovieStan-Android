@@ -44,14 +44,14 @@ public class RecommendFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend, container, false);
 
-        // temp clickable item
-        view.findViewById(R.id.list_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // get movie detail by movie id
-                ((MainActivity) getActivity()).displayMovieView(1);
-            }
-        });
+//        // temp clickable item
+//        view.findViewById(R.id.list_layout).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // get movie detail by movie id
+//                ((MainActivity) getActivity()).displayMovieView(1);
+//            }
+//        });
 
         return view;
     }

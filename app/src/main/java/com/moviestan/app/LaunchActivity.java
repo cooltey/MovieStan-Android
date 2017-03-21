@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.View;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -42,11 +44,65 @@ public class LaunchActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_launch);
 
+        //init
         mLiteDatabase = new LiteDatabase(this);
 
-        // call login
-        setupFacebookLogin();
 
+
+        // setup view
+        mLoginButton = (LoginButton) findViewById(R.id.login_button);
+
+
+        // check access
+        if(!mLiteDatabase.get(mLiteDatabase.FACEBOOK_ID).equals("0")){
+
+            // hide btn
+            mLoginButton.setVisibility(View.GONE);
+
+            MyProgressDialog.procsessing(LaunchActivity.this);
+
+            // call token
+            getLoginToken(mLiteDatabase.get(mLiteDatabase.FACEBOOK_ID),
+                        mLiteDatabase.get(mLiteDatabase.FACEBOOK_EMAIL),
+                        mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
+
+        }else{
+
+            // call login
+            setupFacebookLogin();
+        }
+
+    }
+
+    // get login token
+    private void getLoginToken(String fb_id, String email, String user_id){
+        // send information to database
+        Cloud.loginAction(getApplicationContext(), fb_id, email, user_id, new Cloud.LoginListener() {
+            @Override
+            public Handler getHandler() {
+                return mHandler;
+            }
+
+            @Override
+            public void onSuccess(String userToken) {
+
+                // save into database
+                mLiteDatabase.save(mLiteDatabase.APP_USER_TOKEN, userToken);
+
+
+                // goto next activity
+                gotoMain();
+
+                LogFactory.set("LaunchActivity onSuccess", userToken);
+            }
+
+            @Override
+            public void onFail(String msg) {
+                LogFactory.set("LaunchActivity onFail", msg);
+
+
+            }
+        });
     }
 
     // setup facebook login button
@@ -54,9 +110,6 @@ public class LaunchActivity extends AppCompatActivity{
 
         // initial callback manager
         mCallbackManager = CallbackManager.Factory.create();
-
-        // setup view
-        mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
         // setup permission
         mLoginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
@@ -71,7 +124,7 @@ public class LaunchActivity extends AppCompatActivity{
 
 
                 // call dialog
-                MyProgressDialog.procsessing(LaunchActivity.this);
+                MyProgressDialog.procsessing(LaunchActivity.this, Gravity.BOTTOM);
 
                 // App code
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -87,6 +140,10 @@ public class LaunchActivity extends AppCompatActivity{
                                     String getId    = object.getString("id");
                                     String getName  = object.getString("name");
 
+                                    // save into database
+                                    mLiteDatabase.save(mLiteDatabase.FACEBOOK_ID, getId);
+                                    mLiteDatabase.save(mLiteDatabase.FACEBOOK_NAME, getName);
+                                    mLiteDatabase.save(mLiteDatabase.FACEBOOK_EMAIL, getEmail);
 
                                     // send information to database
                                     Cloud.registerDevice(getApplicationContext(), getId, getEmail, new Cloud.RegisterDeviceListener() {
@@ -101,9 +158,10 @@ public class LaunchActivity extends AppCompatActivity{
                                             // save into database
                                             mLiteDatabase.save(mLiteDatabase.APP_USER_ID, userId);
 
-
-                                            // goto next activity
-                                            gotoMain();
+                                            // execute login
+                                            getLoginToken(mLiteDatabase.get(mLiteDatabase.FACEBOOK_ID),
+                                                            mLiteDatabase.get(mLiteDatabase.FACEBOOK_EMAIL),
+                                                            mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
 
                                             LogFactory.set("LaunchActivity onSuccess", userId);
                                         }
@@ -119,10 +177,8 @@ public class LaunchActivity extends AppCompatActivity{
 
                                 }catch (Exception e){
                                     LogFactory.set("LaunchActivity Error on API", e);
-
-
-                                    // goto next activity
-                                    gotoMain();
+                                    // error
+                                    finish();
                                 }
                             }
                         });

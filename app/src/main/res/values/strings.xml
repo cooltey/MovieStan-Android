@@ -31,6 +31,7 @@
     <string name="dialog_processing">Processing</string>
     <string name="alert_logout">Exit the app?</string>
     <string name="alert_logout_facebook">Logout?</string>
+    <string name="alert_send_comment">Send rating and comments?</string>
     <string name="alert_yes_btn">Yes</string>
     <string name="alert_no_btn">No</string>
 
@@ -41,4 +42,8 @@
     <!-- Movie Information -->
     <string name="movie_release_date_prefix">Release Date: \u0020</string>
     <string name="movie_id_prefix">ID: \u0020</string>
+
+    <!-- Comments -->
+    <string name="comment_success">Comments have been published</string>
+    <string name="comment_fail">Server error, please try again.</string>
 </resources>

@@ -59,7 +59,7 @@ public class LaunchActivity extends AppCompatActivity{
             // hide btn
             mLoginButton.setVisibility(View.GONE);
 
-            MyProgressDialog.procsessing(LaunchActivity.this);
+            MyProgressDialog.procsessing(LaunchActivity.this, Gravity.BOTTOM);
 
             // call token
             getLoginToken(mLiteDatabase.get(mLiteDatabase.FACEBOOK_ID),
@@ -146,7 +146,7 @@ public class LaunchActivity extends AppCompatActivity{
                                     mLiteDatabase.save(mLiteDatabase.FACEBOOK_EMAIL, getEmail);
 
                                     // send information to database
-                                    Cloud.registerDevice(getApplicationContext(), getId, getEmail, new Cloud.RegisterDeviceListener() {
+                                    Cloud.registerDevice(getApplicationContext(), getId, getName, getEmail, new Cloud.RegisterDeviceListener() {
                                         @Override
                                         public Handler getHandler() {
                                             return mHandler;

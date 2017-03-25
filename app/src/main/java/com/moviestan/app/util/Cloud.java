@@ -95,6 +95,7 @@ public class Cloud {
 
         // data
         String mFacebookId;
+        String mFbName;
         String mEmail;
 
         Runnable mCompleteRunnable = new Runnable() {
@@ -108,10 +109,11 @@ public class Cloud {
             }
         };
 
-        public RegisterRunnable(Context context, String facebook_id, String email, RegisterDeviceListener listener) {
+        public RegisterRunnable(Context context, String facebook_id, String fb_name, String email, RegisterDeviceListener listener) {
             mListener   = listener;
             mContext    = context;
             mFacebookId = facebook_id;
+            mFbName     = fb_name;
             mEmail      = email;
         }
         @Override
@@ -127,6 +129,7 @@ public class Cloud {
                 RequestBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
                         .addFormDataPart("FacebookId", mFacebookId)
+                        .addFormDataPart("Name", mFbName)
                         .addFormDataPart("Email", mEmail)
                         .build();
 
@@ -420,8 +423,111 @@ public class Cloud {
         }
     }
 
-    public static void registerDevice(Context context, String facebook_id, String email, RegisterDeviceListener listener) {
-        mExecutors.execute(new RegisterRunnable(context, facebook_id, email, listener));
+    // set rating runnable
+    static class RatingRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        // data
+//        MemberId: Get from MemberLogin.php API
+//        LoginToken: Get from MemberLogin.php API
+//        MovieId: Get from Movie List API
+//        Score: The rating score (1-10)
+//        Comments: The Comments
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mMovieId;
+        String mScore;
+        String mComments;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public RatingRunnable(Context context, String movie_id, String score, String comments, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mMovieId        = movie_id;
+            mScore          = score;
+            mComments       = comments;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "RatingAdd.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("MovieId", mMovieId)
+                        .addFormDataPart("Score", mScore)
+                        .addFormDataPart("Comments", mComments)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("RatingRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("RatingRunnable");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("RatingRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    public static void registerDevice(Context context, String facebook_id, String fb_name, String email, RegisterDeviceListener listener) {
+        mExecutors.execute(new RegisterRunnable(context, facebook_id, fb_name, email, listener));
     }
 
     public static void loginAction(Context context, String facebook_id, String email, String member_id, LoginListener listener) {
@@ -435,6 +541,10 @@ public class Cloud {
 
     public static void getMovieList(Context context, String page, MovieListener listener) {
         mExecutors.execute(new GetMovieListRunnable(context, page, listener));
+    }
+
+    public static void addRating(Context context, String movie_id, String score, String comments, SimpleListener listener) {
+        mExecutors.execute(new RatingRunnable(context, movie_id, score, comments, listener));
     }
 
 }

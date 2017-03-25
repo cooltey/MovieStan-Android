@@ -22,7 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MovieFragment extends Fragment {
     // parameter string
-    private static final String MOVIE_DATA = "movie_data";
+    public static final String MOVIE_DATA = "movie_data";
 
     // movie data
     private MovieSerializer mData;
@@ -109,6 +109,8 @@ public class MovieFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), CommentActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(MOVIE_DATA, mData);
                 startActivity(intent);
             }
         });

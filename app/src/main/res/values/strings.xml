@@ -46,4 +46,17 @@
     <!-- Comments -->
     <string name="comment_success">Comments have been published</string>
     <string name="comment_fail">Server error, please try again.</string>
+    <string name="comment_rating_prefix">Rating for the Movie: \u0020</string>
+    <string-array name="comment_rating">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 </resources>

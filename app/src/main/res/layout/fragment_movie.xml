@@ -132,11 +132,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/item_list_comment" />
-                <include layout="@layout/item_list_comment" />
-                <include layout="@layout/item_list_comment" />
-                <include layout="@layout/item_list_comment" />
-                <include layout="@layout/item_list_comment" />
             </LinearLayout>
 
         </LinearLayout>

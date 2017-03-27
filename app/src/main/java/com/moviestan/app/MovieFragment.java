@@ -15,9 +15,13 @@ import android.widget.TextView;
 
 import com.moviestan.app.data.General;
 import com.moviestan.app.data.MovieSerializer;
+import com.moviestan.app.data.RatingSerializer;
 import com.moviestan.app.util.Cloud;
 import com.moviestan.app.util.LiteDatabase;
+import com.moviestan.app.util.MyProgressDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 
 
 public class MovieFragment extends Fragment {
@@ -26,6 +30,8 @@ public class MovieFragment extends Fragment {
 
     // movie data
     private MovieSerializer mData;
+    // rating data
+    private ArrayList<RatingSerializer> mRatingData = new ArrayList<>();
 
 
     // general
@@ -33,6 +39,9 @@ public class MovieFragment extends Fragment {
     private LayoutInflater mLayoutInflater;
     private ImageLoader mImageLoader;
     private LiteDatabase mLiteDatabase;
+
+    // view
+    private LinearLayout mCommentsArea;
 
 
     public MovieFragment() {
@@ -76,7 +85,7 @@ public class MovieFragment extends Fragment {
         TextView movieDesc      = (TextView) view.findViewById(R.id.movie_description);
         RatingBar movieRating   = (RatingBar) view.findViewById(R.id.movie_rating);
         LinearLayout movieTags  = (LinearLayout) view.findViewById(R.id.movie_tags);
-        LinearLayout commentsArea  = (LinearLayout) view.findViewById(R.id.comment_area);
+        mCommentsArea  = (LinearLayout) view.findViewById(R.id.comment_area);
 
 
         // setup content
@@ -114,9 +123,71 @@ public class MovieFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
         return view;
     }
 
+
+
+    // download rating
+    private void downloadRating(String movie_id){
+
+        MyProgressDialog.procsessing(getActivity());
+
+        Cloud.getRatingList(getActivity(), movie_id, new Cloud.RatingListener() {
+            @Override
+            public Handler getHandler() {
+                MyProgressDialog.cancel();
+                return mHandler;
+            }
+
+            @Override
+            public void onSuccess(ArrayList<RatingSerializer> data) {
+
+                // update list
+                mRatingData.clear();
+                mRatingData.addAll(data);
+
+                // update view
+                mCommentsArea.removeAllViewsInLayout();
+
+                // add views
+                for(RatingSerializer ratingData : mRatingData){
+                    // get view
+                    View rootView = getActivity().getLayoutInflater().inflate(R.layout.item_list_comment, null);
+
+                    ImageView userImage = (ImageView) rootView.findViewById(R.id.list_img);
+                    TextView userComment = (TextView) rootView.findViewById(R.id.list_comment);
+                    TextView userInfo = (TextView) rootView.findViewById(R.id.list_info);
+                    RatingBar userRating = (RatingBar) rootView.findViewById(R.id.rating);
+
+
+                    mImageLoader.displayImage("https://graph.facebook.com/" + ratingData.fb_id + "/picture?type=large", userImage);
+                    userComment.setText(ratingData.comments);
+                    userInfo.setText(ratingData.name + " @ " + ratingData.date);
+                    userRating.setNumStars(10);
+                    userRating.setRating(Float.parseFloat(ratingData.score));
+
+                    mCommentsArea.addView(rootView);
+
+                }
+
+            }
+
+            @Override
+            public void onFail(String msg) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        // load view
+        downloadRating(mData.id);
+    }
 
     @Override
     public void onDetach() {

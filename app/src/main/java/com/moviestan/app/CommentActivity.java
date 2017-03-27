@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +51,7 @@ public class CommentActivity extends AppCompatActivity{
         ImageView moviePoster   = (ImageView) findViewById(R.id.comment_movie_poster);
         TextView movieTitle     = (TextView) findViewById(R.id.comment_movie_title);
         TextView movieDesc      = (TextView) findViewById(R.id.comment_movie_description);
-        final RatingBar movieRating   = (RatingBar) findViewById(R.id.comment_movie_rating);
+        final AppCompatSpinner movieRating   = (AppCompatSpinner) findViewById(R.id.comment_rating);
         final EditText movieComment   = (EditText) findViewById(R.id.comment_enter_zone);
         Button movieCommentSend = (Button) findViewById(R.id.comment_send);
 
@@ -59,8 +59,6 @@ public class CommentActivity extends AppCompatActivity{
         mImageLoader.displayImage(mData.poster_path, moviePoster);
         movieTitle.setText(mData.title);
         movieDesc.setText(mData.overview);
-        movieRating.setNumStars(10);
-        movieRating.setEnabled(true);
 
         // send comments
         movieCommentSend.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +71,7 @@ public class CommentActivity extends AppCompatActivity{
                     public void onClick(DialogInterface dialog, int which) {
 
                         String movieId = mData.id;
-                        String movieScore = ((int) movieRating.getRating()) + "";
+                        String movieScore = movieRating.getSelectedItem().toString() + "";
                         String movieComments = movieComment.getText().toString();
 
                         // execute posting process
@@ -103,6 +101,7 @@ public class CommentActivity extends AppCompatActivity{
         Cloud.addRating(CommentActivity.this, movie_id, score, movie_comment, new Cloud.SimpleListener() {
             @Override
             public Handler getHandler() {
+                MyProgressDialog.cancel();
                 return mHandler;
             }
 

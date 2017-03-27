@@ -29,7 +29,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/general_margin_thirty">
+            android:layout_marginTop="@dimen/general_margin_thirty"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,23 +78,41 @@
                     android:layout_weight="0.6"
                     android:orientation="vertical">
 
-                    <RatingBar
-                        android:id="@+id/comment_movie_rating"
-                        style="@style/Widget.AppCompat.RatingBar.Indicator"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:isIndicator="true"
-                        android:theme="@style/RatingBar"/>
+                        android:layout_margin="@dimen/general_margin_ten">
+                        <TextView
+                            android:id="@+id/comment_rating_prefix"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/comment_rating_prefix"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/general_text_size_12"
+                            android:layout_centerVertical="true"/>
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:id="@+id/comment_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/comment_rating_prefix"
+                            android:entries="@array/comment_rating"
+                            android:background="@drawable/grey_round_filled"
+                            android:padding="@dimen/general_margin_five"
+                            android:gravity="center">
+
+                        </android.support.v7.widget.AppCompatSpinner>
+                    </RelativeLayout>
 
                     <EditText
                         android:id="@+id/comment_enter_zone"
                         android:layout_width="match_parent"
-                        android:layout_height="170dp"
+                        android:layout_height="@dimen/comment_edittext_height"
                         android:layout_margin="@dimen/general_margin_ten"
                         android:background="@drawable/grey_round"
                         android:gravity="left|top"
                         android:hint="Leave Comments"
-                        android:textColorHint="@color/light_grey"
+                        android:textColorHint="@color/dark_grey"
                         android:padding="@dimen/general_margin_five"
                         android:textColor="@color/black"
                         android:textSize="@dimen/general_text_size_12" />

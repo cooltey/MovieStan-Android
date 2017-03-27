@@ -6,6 +6,7 @@ import android.os.Handler;
 import com.moviestan.app.R;
 import com.moviestan.app.data.General;
 import com.moviestan.app.data.MovieSerializer;
+import com.moviestan.app.data.RatingSerializer;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -48,6 +49,11 @@ public class Cloud {
         void onFail(String msg);
     }
 
+    public interface RatingListener {
+        Handler getHandler();
+        void onSuccess(ArrayList<RatingSerializer> data);
+        void onFail(String msg);
+    }
 
     public interface AppInformationListener {
         Handler getHandler();
@@ -453,7 +459,7 @@ public class Cloud {
                     mListener.onFail(mErrorMsg);
                 } else {
                     mListener.onSuccess(mSuccessMsg);
-                }
+            }
             }
         };
 
@@ -508,7 +514,7 @@ public class Cloud {
                 if(getStatusCode.equals("200")){
 
                     // get login token
-                    mSuccessMsg = responseJson.getString("RatingRunnable");
+                    mSuccessMsg = responseJson.getString("StatusCode");
 
                 }else{
                     // fail
@@ -518,6 +524,112 @@ public class Cloud {
             }catch (Exception e){
                 mErrorMsg = mContext.getString(R.string.api_error) + e;
                 LogFactory.set("RatingRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // get rating list runnable
+    static class GetRatingRunnable implements Runnable {
+        // config
+        Context mContext;
+        RatingListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        ArrayList<RatingSerializer> mData = new ArrayList<RatingSerializer>();
+
+        // data
+//        MemberId: Get from MemberLogin.php API
+//        LoginToken: Get from MemberLogin.php API
+//        MovieId: Get from Movie List API
+//        Score: The rating score (1-10)
+//        Comments: The Comments
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mMovieId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mData);
+                }
+            }
+        };
+
+        public GetRatingRunnable(Context context, String movie_id, RatingListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mMovieId        = movie_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "RatingList.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("MovieId", mMovieId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("GetRatingRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("StatusCode");
+
+                    // get list
+                    JSONArray jsonArray = new JSONArray(responseJson.getString("List"));
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        RatingSerializer tmpData = RatingSerializer.fromJSON(jsonArray.getString(i));
+                        mData.add(tmpData);
+                    }
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("GetRatingRunnable", e);
             }
 
 
@@ -545,6 +657,10 @@ public class Cloud {
 
     public static void addRating(Context context, String movie_id, String score, String comments, SimpleListener listener) {
         mExecutors.execute(new RatingRunnable(context, movie_id, score, comments, listener));
+    }
+
+    public static void getRatingList(Context context, String movie_id, RatingListener listener) {
+        mExecutors.execute(new GetRatingRunnable(context, movie_id, listener));
     }
 
 }

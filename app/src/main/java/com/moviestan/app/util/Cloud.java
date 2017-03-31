@@ -55,6 +55,12 @@ public class Cloud {
         void onFail(String msg);
     }
 
+    public interface FavoriteListener {
+        Handler getHandler();
+        void onSuccess(String fb_id, String user_name, ArrayList<MovieSerializer> data);
+        void onFail(String msg);
+    }
+
     public interface AppInformationListener {
         Handler getHandler();
         void onSuccess(String email, String about_us);
@@ -399,7 +405,7 @@ public class Cloud {
 
                 JSONObject responseJson = new JSONObject(response.body().string());
 
-                // LogFactory.set("GetMovieListRunnable", responseJson.toString());
+//                 LogFactory.set("GetMovieListRunnable", responseJson.toString());
 
                 // get current page
                 int currentPage = responseJson.getInt("page");
@@ -638,6 +644,388 @@ public class Cloud {
         }
     }
 
+    // set browse history runnable
+    static class BrowseHistoryRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mMovieId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public BrowseHistoryRunnable(Context context, String movie_id, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mMovieId        = movie_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "BrowserAdd.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("MovieId", mMovieId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("BrowseHistoryRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("StatusCode");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("BrowseHistoryRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // set favorite runnable
+    static class FavoriteRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mMovieId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public FavoriteRunnable(Context context, String movie_id, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mMovieId        = movie_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FavoriteAdd.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("MovieId", mMovieId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("FavoriteRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("Action");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("FavoriteRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // check favorite runnable
+    static class CheckFavoriteRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mMovieId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public CheckFavoriteRunnable(Context context, String movie_id, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mMovieId        = movie_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FavoriteCheck.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("MovieId", mMovieId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("CheckFavoriteRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("FavoriteId");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("CheckFavoriteRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+
+    // get favorite list runnable
+    static class GetFavoriteRunnable implements Runnable {
+        // config
+        Context mContext;
+        FavoriteListener mListener;
+
+        String mErrorMsg;
+        String mFacebookId;
+        String mUserName;
+
+        ArrayList<MovieSerializer> mData = new ArrayList<MovieSerializer>();
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mFetchMemberId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mFacebookId, mUserName, mData);
+                }
+            }
+        };
+
+        public GetFavoriteRunnable(Context context, String user_id, FavoriteListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mFetchMemberId  = user_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FavoriteList.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("FetchMemberId", mFetchMemberId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("GetFavoriteRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+//                    mSuccessMsg = responseJson.getString("StatusCode");
+                    mFacebookId = responseJson.getJSONObject("Member").getString("UserFB");
+                    mUserName = responseJson.getJSONObject("Member").getString("UserName");
+
+                    // get list
+                    JSONArray jsonArray = new JSONArray(responseJson.getString("List"));
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        MovieSerializer tmpData = MovieSerializer.fromJSON(jsonArray.getString(i));
+                        mData.add(tmpData);
+                    }
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("GetFavoriteRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+
     public static void registerDevice(Context context, String facebook_id, String fb_name, String email, RegisterDeviceListener listener) {
         mExecutors.execute(new RegisterRunnable(context, facebook_id, fb_name, email, listener));
     }
@@ -663,4 +1051,19 @@ public class Cloud {
         mExecutors.execute(new GetRatingRunnable(context, movie_id, listener));
     }
 
+    public static void addBrowseHistory(Context context, String movie_id, SimpleListener listener) {
+        mExecutors.execute(new BrowseHistoryRunnable(context, movie_id, listener));
+    }
+
+    public static void setMyFavorite(Context context, String movie_id, SimpleListener listener) {
+        mExecutors.execute(new FavoriteRunnable(context, movie_id, listener));
+    }
+
+    public static void checkMyFavorite(Context context, String movie_id, SimpleListener listener) {
+        mExecutors.execute(new CheckFavoriteRunnable(context, movie_id, listener));
+    }
+
+    public static void getFavoriteList(Context context, String user_id, FavoriteListener listener) {
+        mExecutors.execute(new GetFavoriteRunnable(context, user_id, listener));
+    }
 }

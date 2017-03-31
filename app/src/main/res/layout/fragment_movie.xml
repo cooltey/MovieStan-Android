@@ -78,6 +78,14 @@
                         android:layout_marginTop="@dimen/general_margin_five"
                         android:textColor="@color/black"
                         android:textSize="@dimen/general_text_size_10" />
+                    <!-- Rating -->
+                    <RatingBar
+                        android:id="@+id/movie_rating"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/general_margin_five"
+                        android:theme="@style/RatingBar"/>
 
                     <TextView
                         android:id="@+id/movie_description"
@@ -95,30 +103,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:layout_marginLeft="@dimen/general_margin_fifth"
-                    android:layout_marginRight="@dimen/general_margin_fifth"
-                    android:gravity="center">
-                    <!-- Rating -->
-                    <RatingBar
-                        android:id="@+id/movie_rating"
-                        style="@style/Widget.AppCompat.RatingBar.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:theme="@style/RatingBar"/>
-                </LinearLayout>
                 <!-- Tags -->
                 <LinearLayout
                     android:id="@+id/movie_tags"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:gravity="right"
                     android:layout_marginLeft="@dimen/general_margin_fifth"
                     android:layout_marginRight="@dimen/general_margin_fifth"
-                    android:layout_weight="0.5"
                     android:orientation="horizontal">
 
                 </LinearLayout>

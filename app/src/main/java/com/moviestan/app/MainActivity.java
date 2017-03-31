@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
@@ -23,6 +24,8 @@ import com.moviestan.app.util.Cloud;
 import com.moviestan.app.util.LiteDatabase;
 import com.moviestan.app.util.LogFactory;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.Stack;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,9 +42,11 @@ public class MainActivity extends AppCompatActivity
     private View mHeaderLayout;
     private TextView mHeaderUsernameView;
     private CircleImageView mHeaderImageView;
+    public static ImageButton mRightBtnView;
 
     // fragment
     private FragmentTransaction mFragmentTransaction;
+    private Stack<String> mTitleStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,9 @@ public class MainActivity extends AppCompatActivity
         // get tool bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // get view
+        mRightBtnView = (ImageButton) findViewById(R.id.right_btn);
 
         // get drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -130,7 +138,6 @@ public class MainActivity extends AppCompatActivity
             LogFactory.set("onBackPressed", "1");
         } else {
             int count = getSupportFragmentManager().getBackStackEntryCount();
-
             LogFactory.set("count", count);
 
             if (count == 0) {
@@ -153,8 +160,10 @@ public class MainActivity extends AppCompatActivity
             } else {
                 LogFactory.set("onBackPressed", "3");
 
+                mRightBtnView.setVisibility(View.GONE);
 
-                getSupportActionBar().setTitle(getString(R.string.app_name));
+                mTitleStack.pop();
+                getSupportActionBar().setTitle(mTitleStack.pop());
 
                 getSupportFragmentManager().popBackStack();
             }
@@ -164,8 +173,11 @@ public class MainActivity extends AppCompatActivity
 
     public void displayView(int viewId) {
 
+        mRightBtnView.setVisibility(View.GONE);
+
         Fragment fragment = null;
         String title = getString(R.string.app_name);
+        Bundle bundle = new Bundle();
 
         switch (viewId) {
             case R.id.nav_home:
@@ -188,15 +200,18 @@ public class MainActivity extends AppCompatActivity
                 title  = getString(R.string.app_title_recommend_3);
                 break;
 
-            case R.id.nav_profile_img:
-                fragment = new ProfileFragment();
-                title  = getString(R.string.app_title_profile);
-                break;
-
-            case R.id.nav_profile_username:
-                fragment = new ProfileFragment();
-                title  = getString(R.string.app_title_profile);
-                break;
+//            case R.id.nav_profile_img:
+//                fragment = ProfileFragment.newInstance(mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
+//                title  = getString(R.string.app_title_profile);
+//
+//
+//                break;
+//
+//            case R.id.nav_profile_username:
+//                fragment = ProfileFragment.newInstance(mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
+//                title  = getString(R.string.app_title_profile);
+//
+//                break;
 
             case R.id.nav_friends:
                 fragment = new FriendsFragment();
@@ -247,21 +262,56 @@ public class MainActivity extends AppCompatActivity
 
         // set the toolbar title
         if (getSupportActionBar() != null) {
+            mTitleStack.add(title);
             getSupportActionBar().setTitle(title);
+        }
+
+        // go to profile view
+        if(viewId == R.id.nav_profile_img || viewId == R.id.nav_profile_username){
+            // get profile view
+            displayProfileView(mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
         }
 
     }
 
 
+//    public void showProfileSettings(String user_id){
+//        if(!user_id.equals(mLiteDatabase.get(mLiteDatabase.APP_USER_ID))) {
+//            // display view
+//            mRightBtnView.setVisibility(View.VISIBLE);
+//            mRightBtnView.setImageResource(R.drawable.ic_friend_add);
+//            // add favorite
+//            mRightBtnView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    // add favorite
+//                }
+//            });
+//        }
+//    }
 
-    public void displayMovieView(MovieSerializer data){
+    public void displayProfileView(String user_id){
 
         Fragment fragment = null;
 
-        fragment = MovieFragment.newInstance(data);
-        String title  = data.title;
+        fragment = ProfileFragment.newInstance(user_id);
+        String title  = getString(R.string.app_title_profile);
 
         if (fragment != null) {
+
+            if(!user_id.equals(mLiteDatabase.get(mLiteDatabase.APP_USER_ID))) {
+                // display view
+                mRightBtnView.setVisibility(View.VISIBLE);
+                mRightBtnView.setImageResource(R.drawable.ic_friend_add);
+                // add favorite
+                mRightBtnView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // add favorite
+                    }
+                });
+            }
+
             mFragmentTransaction = getSupportFragmentManager().beginTransaction();
             mFragmentTransaction.replace(R.id.content_frame, fragment);
             mFragmentTransaction.addToBackStack(null);
@@ -270,9 +320,73 @@ public class MainActivity extends AppCompatActivity
 
         // set the toolbar title
         if (getSupportActionBar() != null) {
+            mTitleStack.add(title);
             getSupportActionBar().setTitle(title);
         }
     }
+
+    public void displayMovieView(final MovieSerializer data){
+
+        Fragment fragment = null;
+
+        fragment = MovieFragment.newInstance(data);
+        String title  = data.title;
+
+        if (fragment != null) {
+
+            // display view
+            mRightBtnView.setVisibility(View.VISIBLE);
+            mRightBtnView.setImageResource(R.drawable.ic_favorite_empty);
+            // add favorite
+            mRightBtnView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // add favorite
+                    setupFavorite(data.id);
+                }
+            });
+
+            mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+            mFragmentTransaction.replace(R.id.content_frame, fragment);
+            mFragmentTransaction.addToBackStack(null);
+            mFragmentTransaction.commit();
+        }
+
+        // set the toolbar title
+        if (getSupportActionBar() != null) {
+            mTitleStack.add(title);
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
+    // setup favorite
+    private void setupFavorite(String movie_id){
+
+
+        Cloud.setMyFavorite(getApplicationContext(), movie_id, new Cloud.SimpleListener() {
+            @Override
+            public Handler getHandler() {
+                return mHandler;
+            }
+
+            @Override
+            public void onSuccess(String status) {
+                if(status.equals("INSERT")){
+                    // null
+                    mRightBtnView.setImageResource(R.drawable.ic_favorite_added);
+                }else{
+                    // exist
+                    mRightBtnView.setImageResource(R.drawable.ic_favorite_empty);
+                }
+            }
+
+            @Override
+            public void onFail(String msg) {
+
+            }
+        });
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

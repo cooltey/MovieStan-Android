@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 
 public class RatingSerializer implements Serializable{
+    public String user_id;
     public String fb_id;
     public String name;
     public String score;
@@ -20,6 +21,7 @@ public class RatingSerializer implements Serializable{
         try {
             JSONObject userObject = new JSONObject(json);
             data = new RatingSerializer();
+            data.user_id 		= JSONGetter.get(userObject, "UserId");
             data.fb_id 		    = JSONGetter.get(userObject, "UserFB");
             data.name 		    = JSONGetter.get(userObject, "UserName");
             data.score 		    = JSONGetter.get(userObject, "Score");

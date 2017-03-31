@@ -23,6 +23,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
+import static com.moviestan.app.MainActivity.mRightBtnView;
+
 
 public class MovieFragment extends Fragment {
     // parameter string
@@ -111,6 +113,12 @@ public class MovieFragment extends Fragment {
         }
 
 
+        // add history
+        addBrowserHistory(mData.id);
+
+        // check favorite history
+        downloadFavoriteStatus(mData.id);
+
         // go to comment activity
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.write_comment);
 
@@ -128,7 +136,27 @@ public class MovieFragment extends Fragment {
         return view;
     }
 
+    // add browser history
+    private void addBrowserHistory(String movie_id){
 
+
+        Cloud.addBrowseHistory(getActivity(), movie_id, new Cloud.SimpleListener() {
+            @Override
+            public Handler getHandler() {
+                return mHandler;
+            }
+
+            @Override
+            public void onSuccess(String success_msng) {
+
+            }
+
+            @Override
+            public void onFail(String msg) {
+
+            }
+        });
+    }
 
     // download rating
     private void downloadRating(String movie_id){
@@ -153,7 +181,7 @@ public class MovieFragment extends Fragment {
                 mCommentsArea.removeAllViewsInLayout();
 
                 // add views
-                for(RatingSerializer ratingData : mRatingData){
+                for(final RatingSerializer ratingData : mRatingData){
                     // get view
                     View rootView = getActivity().getLayoutInflater().inflate(R.layout.item_list_comment, null);
 
@@ -169,10 +197,51 @@ public class MovieFragment extends Fragment {
                     userRating.setNumStars(10);
                     userRating.setRating(Float.parseFloat(ratingData.score));
 
+
+                    // setup onclick
+                    rootView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            // go to profile
+                            ((MainActivity)getActivity()).displayProfileView(ratingData.user_id);
+                        }
+                    });
+
                     mCommentsArea.addView(rootView);
 
                 }
 
+            }
+
+            @Override
+            public void onFail(String msg) {
+
+            }
+        });
+    }
+
+    // download favorite status
+    private void downloadFavoriteStatus(String movie_id){
+
+//        MyProgressDialog.procsessing(getActivity());
+
+        Cloud.checkMyFavorite(getActivity(), movie_id, new Cloud.SimpleListener() {
+            @Override
+            public Handler getHandler() {
+//                MyProgressDialog.cancel();
+                return mHandler;
+            }
+
+            @Override
+            public void onSuccess(String data) {
+                if(data.equals("0")){
+                    // null
+                    mRightBtnView.setImageResource(R.drawable.ic_favorite_empty);
+                }else{
+                    // exist
+                    mRightBtnView.setImageResource(R.drawable.ic_favorite_added);
+                }
             }
 
             @Override

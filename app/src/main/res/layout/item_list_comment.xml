@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:rating="4"
-            android:layout_marginTop="@dimen/general_margin_five"/>
+            android:layout_marginTop="@dimen/general_margin_five"
+            android:theme="@style/RatingBar"/>
         <TextView
             android:id="@+id/list_comment"
             android:layout_width="match_parent"

@@ -48,26 +48,10 @@
 
                     <ImageView
                         android:id="@+id/comment_movie_poster"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
+                        android:layout_width="@dimen/movie_height"
+                        android:layout_height="@dimen/movie_height"
                         android:src="@drawable/movie_poster" />
 
-                    <TextView
-                        android:id="@+id/comment_movie_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Logan (2017)"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/general_text_size_20"
-                        android:layout_marginTop="@dimen/general_margin_five"/>
-                    <TextView
-                        android:id="@+id/comment_movie_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border..."
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/general_text_size_12"
-                        android:layout_marginTop="@dimen/general_margin_five"/>
                 </LinearLayout>
 
 
@@ -78,45 +62,78 @@
                     android:layout_weight="0.6"
                     android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+
+                    <TextView
+                        android:id="@+id/comment_movie_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/general_margin_ten">
-                        <TextView
-                            android:id="@+id/comment_rating_prefix"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/comment_rating_prefix"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/general_text_size_12"
-                            android:layout_centerVertical="true"/>
-
-                        <android.support.v7.widget.AppCompatSpinner
-                            android:id="@+id/comment_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/comment_rating_prefix"
-                            android:entries="@array/comment_rating"
-                            android:background="@drawable/grey_round_filled"
-                            android:padding="@dimen/general_margin_five"
-                            android:gravity="center">
-
-                        </android.support.v7.widget.AppCompatSpinner>
-                    </RelativeLayout>
-
-                    <EditText
-                        android:id="@+id/comment_enter_zone"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/comment_edittext_height"
-                        android:layout_margin="@dimen/general_margin_ten"
-                        android:background="@drawable/grey_round"
-                        android:gravity="left|top"
-                        android:hint="Leave Comments"
-                        android:textColorHint="@color/dark_grey"
-                        android:padding="@dimen/general_margin_five"
+                        android:text="Logan (2017)"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/general_text_size_12" />
+                        android:textSize="@dimen/general_text_size_20"
+                        android:layout_marginTop="@dimen/general_margin_five"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/comment_movie_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border..."
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_text_size_12"
+                        android:layout_marginTop="@dimen/general_margin_five"/>
+
+
                 </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/general_divider_height"
+                android:background="@color/divider"
+                android:layout_margin="@dimen/general_margin_ten"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/general_margin_ten"
+                    android:gravity="right">
+                    <TextView
+                        android:id="@+id/comment_rating_prefix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/comment_rating_prefix"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/general_text_size_12"
+                        android:layout_centerVertical="true"/>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/comment_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/comment_rating_prefix"
+                        android:entries="@array/comment_rating"
+                        android:background="@drawable/grey_round_filled"
+                        android:padding="@dimen/general_margin_five"
+                        android:gravity="center">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/comment_enter_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/comment_edittext_height"
+                    android:layout_margin="@dimen/general_margin_fifth"
+                    android:background="@drawable/grey_round"
+                    android:gravity="left|top"
+                    android:hint="Leave Comments"
+                    android:textColorHint="@color/dark_grey"
+                    android:padding="@dimen/general_margin_five"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/general_text_size_12" />
             </LinearLayout>
 
             <Button

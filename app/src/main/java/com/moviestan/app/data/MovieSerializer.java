@@ -50,7 +50,7 @@ public class MovieSerializer implements Serializable{
         try {
             JSONObject userObject = new JSONObject(json);
             data = new MovieSerializer();
-            data.poster_path 		= "http://image.tmdb.org/t/p/w300/" + JSONGetter.get(userObject, "poster_path");
+            data.poster_path 		= "http://image.tmdb.org/t/p/w500/" + JSONGetter.get(userObject, "poster_path");
             data.adult 		        = JSONGetter.get(userObject, "adult");
             data.overview 		    = JSONGetter.get(userObject, "overview");
             data.release_date 		= JSONGetter.get(userObject, "release_date");

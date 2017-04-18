@@ -21,4 +21,10 @@
         <item name="colorControlNormal">@color/light_yellow</item>
         <item name="colorControlActivated">@color/strong_yellow</item>
     </style>
+
+
+    <style name="DialogTheme">
+        <item name="android:windowEnterAnimation">@anim/dialog_open</item>
+        <item name="android:windowExitAnimation">@anim/dialog_close</item>
+    </style>
 </resources>

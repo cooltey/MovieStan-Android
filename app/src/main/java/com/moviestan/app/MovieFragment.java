@@ -1,11 +1,15 @@
 package com.moviestan.app;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,6 +41,8 @@ public class MovieFragment extends Fragment {
 
 
     // general
+    private AlertDialog.Builder mAlterDialog;
+    private Dialog mDialog;
     private Handler mHandler = new Handler();
     private LayoutInflater mLayoutInflater;
     private ImageLoader mImageLoader;
@@ -132,6 +138,52 @@ public class MovieFragment extends Fragment {
             }
         });
 
+        // poster anim
+        moviePoster.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                // trigger the popup dialog
+                mAlterDialog = new AlertDialog.Builder(getActivity());
+
+                // get dialog view
+                ImageView dialogView = new ImageView(getActivity());
+//                dialogView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                mImageLoader.displayImage(mData.poster_path, dialogView);
+
+                // setup
+                mDialog = mAlterDialog.setView(dialogView).create();
+
+
+                mDialog.show();
+
+                // animation
+                mDialog.getWindow().setWindowAnimations(R.style.DialogTheme);
+                mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+                return false;
+            }
+        });
+
+        moviePoster.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+
+                        // close dialog
+                        if(mDialog != null && mDialog.isShowing()){
+                            mDialog.dismiss();
+
+                        }
+
+                        break;
+                }
+                return false;
+            }
+        });
+
 
         return view;
     }
@@ -179,6 +231,13 @@ public class MovieFragment extends Fragment {
 
                 // update view
                 mCommentsArea.removeAllViewsInLayout();
+
+
+                // if its empty
+                if(mRatingData.size() == 0){
+                    View rootView = getActivity().getLayoutInflater().inflate(R.layout.item_empty, null);
+                    mCommentsArea.addView(rootView);
+                }
 
                 // add views
                 for(final RatingSerializer ratingData : mRatingData){

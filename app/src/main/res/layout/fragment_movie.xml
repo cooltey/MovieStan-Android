@@ -118,12 +118,34 @@
             </LinearLayout>
 
 
+            <!-- Comments Title -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/general_margin_twenty"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/general_text_size_14"
+                    android:text="@string/comment_title"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_divider_height"
+                    android:background="@color/divider"
+                    android:layout_marginTop="@dimen/general_margin_five"
+                    android:layout_alignParentBottom="true"/>
+            </LinearLayout>
+
             <!-- Comments Area -->
             <LinearLayout
                 android:id="@+id/comment_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/general_margin_twenty"
+                android:layout_marginRight="@dimen/general_margin_twenty">
 
             </LinearLayout>
 

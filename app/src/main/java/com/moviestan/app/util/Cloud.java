@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.moviestan.app.R;
+import com.moviestan.app.data.FriendsSerializer;
 import com.moviestan.app.data.General;
 import com.moviestan.app.data.MovieSerializer;
 import com.moviestan.app.data.RatingSerializer;
@@ -61,12 +62,17 @@ public class Cloud {
         void onFail(String msg);
     }
 
-    public interface AppInformationListener {
+    public interface FriendsListener {
         Handler getHandler();
-        void onSuccess(String email, String about_us);
+        void onSuccess(ArrayList<FriendsSerializer> data);
         void onFail(String msg);
     }
 
+    public interface RecommendListener {
+        Handler getHandler();
+        void onSuccess(ArrayList<MovieSerializer> data);
+        void onFail(String msg);
+    }
     public interface SimpleListener {
         Handler getHandler();
         void onSuccess(String msg);
@@ -1026,6 +1032,476 @@ public class Cloud {
     }
 
 
+    // Add friend runnable
+    static class AddFriendRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mFriendMemberId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public AddFriendRunnable(Context context, String friend_id, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mFriendMemberId = friend_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FriendAdd.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("FriendMemberId", mFriendMemberId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("AddFriendRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("StatusCode");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("AddFriendRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // Confirm friend runnable
+    static class ConfirmFriendRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mFriendMemberId;
+        String mAccept;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public ConfirmFriendRunnable(Context context, String friend_id, String accept, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mFriendMemberId = friend_id;
+            mAccept         = accept;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FriendConfirm.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("FriendMemberId", mFriendMemberId)
+                        .addFormDataPart("Accept", mAccept)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("ConfirmFriendRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("StatusCode");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("ConfirmFriendRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // get friend list runnable
+    static class GetFriendsRunnable implements Runnable {
+        // config
+        Context mContext;
+        FriendsListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        ArrayList<FriendsSerializer> mData = new ArrayList<FriendsSerializer>();
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mData);
+                }
+            }
+        };
+
+        public GetFriendsRunnable(Context context, FriendsListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FriendsList.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("GetFriendsRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    // get list
+                    JSONArray jsonArray = new JSONArray(responseJson.getString("List"));
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        FriendsSerializer tmpData = FriendsSerializer.fromJSON(jsonArray.getString(i));
+                        mData.add(tmpData);
+                    }
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("GetFriendsRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // check friend runnable
+    static class CheckFriendRunnable implements Runnable {
+        // config
+        Context mContext;
+        SimpleListener mListener;
+
+        String mErrorMsg;
+        String mSuccessMsg;
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mFriendMemberId;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mSuccessMsg);
+                }
+            }
+        };
+
+        public CheckFriendRunnable(Context context, String friend_id, SimpleListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mFriendMemberId = friend_id;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "FriendCheck.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("FriendMemberId", mFriendMemberId)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("CheckFriendRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    mSuccessMsg = responseJson.getString("FriendIndex");
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("CheckFriendRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+    // get recommend list runnable
+    static class GetRecommendsRunnable implements Runnable {
+        // config
+        Context mContext;
+        RecommendListener mListener;
+
+        String mErrorMsg;
+
+        ArrayList<MovieSerializer> mData = new ArrayList<MovieSerializer>();
+
+        // data
+
+        LiteDatabase mLiteDatabase;
+        String mMemberId;
+        String mLoginToken;
+        String mRecommendType;
+
+        Runnable mCompleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mErrorMsg != null) {
+                    mListener.onFail(mErrorMsg);
+                } else {
+                    mListener.onSuccess(mData);
+                }
+            }
+        };
+
+        public GetRecommendsRunnable(Context context, String type, RecommendListener listener) {
+            mListener       = listener;
+            mContext        = context;
+            mLiteDatabase   = new LiteDatabase(context);
+            mLoginToken     = mLiteDatabase.get(mLiteDatabase.APP_USER_TOKEN);
+            mMemberId       = mLiteDatabase.get(mLiteDatabase.APP_USER_ID);
+            mRecommendType  = type;
+        }
+        @Override
+        public void run() {
+
+
+            String url = URL_PREFIX + "RecommendList.php";
+
+            try {
+
+
+                // setup request body
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("MemberId", mMemberId)
+                        .addFormDataPart("LoginToken", mLoginToken)
+                        .addFormDataPart("Type", mRecommendType)
+                        .build();
+
+                // request
+                Request request = new Request.Builder()
+                        .url(url)
+                        .method("POST", RequestBody.create(null, new byte[0]))
+                        .post(requestBody)
+                        .build();
+
+                // get response
+                Response response = mClient.newCall(request).execute();
+
+                // get json format
+
+                JSONObject responseJson = new JSONObject(response.body().string());
+
+                LogFactory.set("GetRecommendsRunnable", responseJson.toString());
+
+                String getStatusCode = responseJson.getString("StatusCode");
+
+                // success
+                if(getStatusCode.equals("200")){
+
+                    // get login token
+                    // get list
+                    JSONArray jsonArray = new JSONArray(responseJson.getString("List"));
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        MovieSerializer tmpData = MovieSerializer.fromJSON(jsonArray.getString(i));
+                        mData.add(tmpData);
+                    }
+
+                }else{
+                    // fail
+                    mErrorMsg = mContext.getString(R.string.api_error) + response.body().string();
+                }
+
+            }catch (Exception e){
+                mErrorMsg = mContext.getString(R.string.api_error) + e;
+                LogFactory.set("GetRecommendsRunnable", e);
+            }
+
+
+            mListener.getHandler().post(mCompleteRunnable);
+
+        }
+    }
+
+
     public static void registerDevice(Context context, String facebook_id, String fb_name, String email, RegisterDeviceListener listener) {
         mExecutors.execute(new RegisterRunnable(context, facebook_id, fb_name, email, listener));
     }
@@ -1065,5 +1541,25 @@ public class Cloud {
 
     public static void getFavoriteList(Context context, String user_id, FavoriteListener listener) {
         mExecutors.execute(new GetFavoriteRunnable(context, user_id, listener));
+    }
+
+    public static void addFriend(Context context, String friend_id, SimpleListener listener) {
+        mExecutors.execute(new AddFriendRunnable(context, friend_id, listener));
+    }
+
+    public static void confirmFriend(Context context, String friend_id, String accept, SimpleListener listener) {
+        mExecutors.execute(new ConfirmFriendRunnable(context, friend_id, accept, listener));
+    }
+
+    public static void getFriendList(Context context, FriendsListener listener) {
+        mExecutors.execute(new GetFriendsRunnable(context, listener));
+    }
+
+    public static void checkMyFriend(Context context, String friend_id, SimpleListener listener) {
+        mExecutors.execute(new CheckFriendRunnable(context, friend_id, listener));
+    }
+
+    public static void getRecommendList(Context context, String type, RecommendListener listener) {
+        mExecutors.execute(new GetRecommendsRunnable(context, type, listener));
     }
 }

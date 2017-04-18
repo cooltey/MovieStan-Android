@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -17,7 +17,6 @@ import com.facebook.login.widget.LoginButton;
 import com.moviestan.app.util.Cloud;
 import com.moviestan.app.util.LiteDatabase;
 import com.moviestan.app.util.LogFactory;
-import com.moviestan.app.util.MyProgressDialog;
 
 import org.json.JSONObject;
 
@@ -30,6 +29,7 @@ public class LaunchActivity extends AppCompatActivity{
 
     // view
     private LoginButton mLoginButton;
+    private ProgressBar mProgressBarView;
 
     // callback
     private CallbackManager mCallbackManager;
@@ -51,6 +51,7 @@ public class LaunchActivity extends AppCompatActivity{
 
         // setup view
         mLoginButton = (LoginButton) findViewById(R.id.login_button);
+        mProgressBarView = (ProgressBar) findViewById(R.id.progressBar);
 
 
         // check access
@@ -59,7 +60,9 @@ public class LaunchActivity extends AppCompatActivity{
             // hide btn
             mLoginButton.setVisibility(View.GONE);
 
-            MyProgressDialog.procsessing(LaunchActivity.this, Gravity.BOTTOM);
+//            MyProgressDialog.procsessing(LaunchActivity.this, Gravity.BOTTOM);
+
+            mProgressBarView.setVisibility(View.VISIBLE);
 
             // call token
             getLoginToken(mLiteDatabase.get(mLiteDatabase.FACEBOOK_ID),
@@ -124,7 +127,8 @@ public class LaunchActivity extends AppCompatActivity{
 
 
                 // call dialog
-                MyProgressDialog.procsessing(LaunchActivity.this, Gravity.BOTTOM);
+//                MyProgressDialog.procsessing(LaunchActivity.this, Gravity.BOTTOM);
+                mProgressBarView.setVisibility(View.VISIBLE);
 
                 // App code
                 GraphRequest request = GraphRequest.newMeRequest(
@@ -205,7 +209,7 @@ public class LaunchActivity extends AppCompatActivity{
 
     private void gotoMain(){
 
-        MyProgressDialog.cancel();
+//        MyProgressDialog.cancel();
 
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), MainActivity.class);

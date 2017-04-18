@@ -7,12 +7,13 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_img"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/nav_profile_icon"
+        android:layout_height="@dimen/nav_profile_icon"
         android:layout_marginTop="@dimen/general_margin_twenty"
         android:layout_marginLeft="@dimen/general_margin_twenty"
         android:layout_marginBottom="@dimen/general_margin_twenty"
-        android:src="@drawable/movie_poster"/>
+        android:src="@drawable/movie_poster"
+        android:layout_centerVertical="true"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,29 +25,59 @@
             android:id="@+id/list_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
+            android:layout_weight="0.6"
             android:text="Cooltey Feng"
             android:textColor="@color/black"
             android:textSize="@dimen/general_text_size_18"
             android:layout_marginTop="@dimen/general_margin_ten"
             android:layout_marginBottom="@dimen/general_margin_ten"
-            android:layout_marginRight="@dimen/general_margin_five"/>
+            android:layout_marginRight="@dimen/general_margin_five"
+            android:layout_gravity="center_vertical"/>
 
+
+        <!--&lt;!&ndash; For already friends &ndash;&gt;-->
         <TextView
             android:id="@+id/list_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:text="From: 2017/03/04"
             android:textColor="@color/black"
-            android:textSize="@dimen/general_text_size_10"
+            android:textSize="@dimen/general_text_size_12"
             android:gravity="center"
             android:padding="@dimen/general_margin_five"
             android:layout_marginTop="@dimen/general_margin_ten"
             android:layout_marginBottom="@dimen/general_margin_ten"
             android:layout_marginRight="@dimen/general_margin_ten"
             android:layout_marginLeft="@dimen/general_margin_five"
+            android:visibility="gone"
             />
+
+        <!-- For request -->
+        <LinearLayout
+            android:id="@+id/friend_request_block"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:orientation="vertical"
+            android:layout_gravity="right">
+
+            <Button
+                android:id="@+id/friend_accept_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friends_accept_btn"
+                android:textSize="@dimen/general_text_size_10"
+                />
+
+            <Button
+                android:id="@+id/friend_decline_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friends_decline_btn"
+                android:textSize="@dimen/general_text_size_10"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <TextView

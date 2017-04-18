@@ -28,34 +28,37 @@
                 <AutoCompleteTextView
                     android:id="@+id/search_friend"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="@dimen/general_margin_forty"
                     android:textColorHint="@color/light_grey"
-                    android:hint="Search Your Friends"
+                    android:hint="@string/friends_search_hint"
                     android:layout_toLeftOf="@+id/search_btn"
                     android:textColor="@color/black"
                     android:padding="@dimen/general_margin_five"
                     android:background="@drawable/white_button_all_round"
                     android:layout_marginRight="@dimen/general_margin_five"
-                    android:textSize="@dimen/general_text_size_12"/>
+                    android:textSize="@dimen/general_text_size_12"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"/>
 
                 <Button
                     android:id="@+id/search_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Search"
+                    android:layout_height="@dimen/general_margin_forty"
+                    android:text="@string/friends_search_btn"
                     android:layout_alignParentRight="true"
                     android:textColor="@color/black"
                     android:background="@drawable/white_button_all_round"
                     android:textSize="@dimen/general_text_size_12"/>
             </RelativeLayout>
 
-            <include layout="@layout/item_list_friends" />
-            <include layout="@layout/item_list_friends" />
-            <include layout="@layout/item_list_friends" />
-            <include layout="@layout/item_list_friends" />
-            <include layout="@layout/item_list_friends" />
-            <include layout="@layout/item_list_friends" />
-            <include layout="@layout/item_list_friends" />
+            <LinearLayout
+                android:id="@+id/friends_zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
 
         </LinearLayout>
 

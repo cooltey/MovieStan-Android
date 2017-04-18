@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/general_margin_ten">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_img"
@@ -36,10 +37,32 @@
                 android:textSize="@dimen/general_text_size_16" />
 
 
+            <!-- Favorite Title -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/general_margin_twenty"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/general_margin_five"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/general_text_size_14"
+                    android:text="@string/favorite_title"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/general_divider_height"
+                    android:background="@color/divider"
+                    android:layout_marginTop="@dimen/general_margin_five"
+                    android:layout_alignParentBottom="true"/>
+            </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fav_movies"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                />
 
         </LinearLayout>
 

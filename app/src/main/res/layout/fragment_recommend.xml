@@ -15,19 +15,19 @@
             android:id="@+id/recommend_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Top Recommend"
             android:textColor="@color/black"
             android:textSize="@dimen/general_text_size_16"
             android:layout_margin="@dimen/general_margin_five"
             android:gravity="center"
             />
 
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
-        <include layout="@layout/item_list_movie" />
+        <LinearLayout
+            android:id="@+id/list_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
 
     </LinearLayout>
 

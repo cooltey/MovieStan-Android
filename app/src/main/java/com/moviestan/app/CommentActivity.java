@@ -90,6 +90,7 @@ public class CommentActivity extends AppCompatActivity{
 
 
 
+        getSupportActionBar().setTitle(mData.title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }

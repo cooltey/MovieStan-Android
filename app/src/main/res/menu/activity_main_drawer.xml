@@ -13,10 +13,10 @@
             <item
                 android:id="@+id/nav_recommend"
                 android:icon="@drawable/ic_top_recommend"
-                android:title="@string/app_title_top_recommend" />
+                android:title="@string/app_title_recommend_1" />
             <item
                 android:id="@+id/nav_recommend_2"
-                android:icon="@drawable/ic_recommend"
+                android:icon="@drawable/ic_recommend_friends"
                 android:title="@string/app_title_recommend_2" />
             <item
                 android:id="@+id/nav_recommend_3"
@@ -39,7 +39,7 @@
         <menu>
             <item
                 android:id="@+id/nav_about"
-                android:icon="@drawable/ic_about"
+                android:icon="@drawable/ic_about_2"
                 android:title="@string/app_title_about" />
             <item
                 android:id="@+id/nav_logout"

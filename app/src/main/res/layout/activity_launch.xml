@@ -28,6 +28,7 @@
             android:layout_marginTop="@dimen/general_margin_fifty"
             android:layout_marginBottom="@dimen/general_margin_thirty"/>
 
+        <include layout="@layout/dialog_progress"/>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

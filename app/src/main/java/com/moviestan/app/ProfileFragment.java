@@ -76,6 +76,7 @@ public class ProfileFragment extends Fragment {
         // setup add button
 //        ((MainActivity)getActivity()).showProfileSettings(mUserId);
 
+
         // download data
         downloadMyFavorite(mUserId);
 
@@ -107,6 +108,7 @@ public class ProfileFragment extends Fragment {
                 mProfileFavMoviesView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                 MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getActivity(), data);
                 mProfileFavMoviesView.setAdapter(adapter);
+
             }
 
             @Override

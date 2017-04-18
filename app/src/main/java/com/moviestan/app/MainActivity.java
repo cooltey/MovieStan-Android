@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.moviestan.app.data.MovieSerializer;
@@ -162,8 +163,8 @@ public class MainActivity extends AppCompatActivity
 
                 mRightBtnView.setVisibility(View.GONE);
 
-                mTitleStack.pop();
-                getSupportActionBar().setTitle(mTitleStack.pop());
+//                mTitleStack.pop();
+                getSupportActionBar().setTitle(getString(R.string.app_title_movie_stan));
 
                 getSupportFragmentManager().popBackStack();
             }
@@ -186,32 +187,20 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_recommend:
-                fragment = new RecommendFragment();
-                title  = getString(R.string.app_title_top_recommend);
+                fragment = RecommendFragment.newInstance("1");
+                title  = getString(R.string.app_title_recommend_1);
                 break;
 
             case R.id.nav_recommend_2:
-                fragment = new RecommendFragment();
+                fragment = RecommendFragment.newInstance("2");
                 title  = getString(R.string.app_title_recommend_2);
                 break;
 
             case R.id.nav_recommend_3:
-                fragment = new RecommendFragment();
+                fragment = RecommendFragment.newInstance("3");
                 title  = getString(R.string.app_title_recommend_3);
                 break;
 
-//            case R.id.nav_profile_img:
-//                fragment = ProfileFragment.newInstance(mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
-//                title  = getString(R.string.app_title_profile);
-//
-//
-//                break;
-//
-//            case R.id.nav_profile_username:
-//                fragment = ProfileFragment.newInstance(mLiteDatabase.get(mLiteDatabase.APP_USER_ID));
-//                title  = getString(R.string.app_title_profile);
-//
-//                break;
 
             case R.id.nav_friends:
                 fragment = new FriendsFragment();
@@ -290,7 +279,10 @@ public class MainActivity extends AppCompatActivity
 //        }
 //    }
 
-    public void displayProfileView(String user_id){
+    public void displayProfileView(final String user_id){
+
+        // display view
+        mRightBtnView.setVisibility(View.GONE);
 
         Fragment fragment = null;
 
@@ -300,16 +292,53 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
 
             if(!user_id.equals(mLiteDatabase.get(mLiteDatabase.APP_USER_ID))) {
-                // display view
-                mRightBtnView.setVisibility(View.VISIBLE);
-                mRightBtnView.setImageResource(R.drawable.ic_friend_add);
-                // add favorite
-                mRightBtnView.setOnClickListener(new View.OnClickListener() {
+
+                Cloud.checkMyFriend(getApplicationContext(), user_id, new Cloud.SimpleListener() {
                     @Override
-                    public void onClick(View view) {
-                        // add favorite
+                    public Handler getHandler() {
+                        return mHandler;
+                    }
+
+                    @Override
+                    public void onSuccess(String data) {
+                        if(data.equals("0")){
+                            // display view
+                            mRightBtnView.setVisibility(View.VISIBLE);
+                            mRightBtnView.setImageResource(R.drawable.ic_friend_add);
+                            // add favorite
+                            mRightBtnView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    // send friend request
+                                    Cloud.addFriend(getApplicationContext(), user_id, new Cloud.SimpleListener() {
+                                        @Override
+                                        public Handler getHandler() {
+                                            return mHandler;
+                                        }
+
+                                        @Override
+                                        public void onSuccess(String msg) {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.friends_request_sent), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFail(String msg) {
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFail(String msg) {
+
                     }
                 });
+
+
             }
 
             mFragmentTransaction = getSupportFragmentManager().beginTransaction();

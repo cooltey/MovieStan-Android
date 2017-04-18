@@ -11,7 +11,7 @@
     <dimen name="nav_padding">10dp</dimen>
 
     <!-- Movie Page -->
-    <dimen name="movie_height">160dp</dimen>
+    <dimen name="movie_height">200dp</dimen>
 
 
     <dimen name="general_progress_margin">8dp</dimen>
@@ -44,7 +44,7 @@
 
     <!-- Launch -->
     <dimen name="launch_app_size">250dp</dimen>
-    <dimen name="comment_edittext_height">170dp</dimen>
+    <dimen name="comment_edittext_height">120dp</dimen>
 
     <!-- General -->
     <dimen name="general_text_size_48">48sp</dimen>

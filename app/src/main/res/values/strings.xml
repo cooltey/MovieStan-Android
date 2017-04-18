@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="empty_text">Oops! Nothing Here.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -18,9 +19,9 @@
     <!-- Fragment Title -->
     <string name="app_title_movie_stan">MovieStan</string>
     <string name="app_title_movie_information">Movie Information</string>
-    <string name="app_title_top_recommend">Top Recommend</string>
-    <string name="app_title_recommend_2">Recommend 2</string>
-    <string name="app_title_recommend_3">Recommend 3</string>
+    <string name="app_title_recommend_1">Recommend by Score</string>
+    <string name="app_title_recommend_2">Recommend by Friends</string>
+    <string name="app_title_recommend_3">Recommend by Browses</string>
     <string name="app_title_profile">Profile</string>
     <string name="app_title_friends">Friends</string>
     <string name="app_title_about">About</string>
@@ -43,7 +44,11 @@
     <string name="movie_release_date_prefix">Release Date: \u0020</string>
     <string name="movie_id_prefix">ID: \u0020</string>
 
+    <!-- Favorites -->
+    <string name="favorite_title">My Favorites</string>
+
     <!-- Comments -->
+    <string name="comment_title">Comments and Ratings</string>
     <string name="comment_success">Comments have been published</string>
     <string name="comment_fail">Server error, please try again.</string>
     <string name="comment_rating_prefix">Rating for the Movie: \u0020</string>
@@ -59,4 +64,13 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+
+    <!-- Friends -->
+    <string name="friends_request_sent">A Request has been sent</string>
+    <string name="friends_search_hint">Search Your Friends</string>
+    <string name="friends_search_btn">Search</string>
+    <string name="friends_since_prefix">Since \u0020</string>
+    <string name="friends_accept_btn">Accept</string>
+    <string name="friends_decline_btn">Decline</string>
+    <string name="friend_remove">Remove from list?</string>
 </resources>
